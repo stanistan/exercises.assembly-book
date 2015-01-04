@@ -1,11 +1,32 @@
 #!/bin/sh
 
-run() {
+status() {
+    echo "  ...$1..."
+}
+
+build() {
     local name=$1
     as --32 ./src/$name.s -o ./build/$name.o
     ld -m elf_i386 ./build/$name.o -o ./build/$name
-    ./build/$name
-    echo "$?"
+    status "Created: ./build/$name"
 }
 
-run $1
+run() {
+    local name=$1
+    shift
+
+    status "Running: ./build/$name $@"
+    ./build/$name $@
+
+    local out=$?
+
+    echo "......................................................"
+    echo "EXIT STATUS: $out"
+}
+
+main() {
+    build $1
+    run $@
+}
+
+main $@
