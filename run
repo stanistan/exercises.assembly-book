@@ -1,0 +1,11 @@
+#!/bin/sh
+
+run() {
+    local name=$1
+    as --32 ./src/$name.s -o ./build/$name.o
+    ld -m elf_i386 ./build/$name.o -o ./build/$name
+    ./build/$name
+    echo "$?"
+}
+
+run $1
