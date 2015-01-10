@@ -1,8 +1,6 @@
 # Learning Assembly
 
-Going through __Programming From The Ground Up__.
-
-http://mirrors.fe.up.pt/pub/nongnu//pgubook/ProgrammingGroundUp-1-0-booksize.pdf
+Going through __[Programming From The Ground Up](http://mirrors.fe.up.pt/pub/nongnu//pgubook/ProgrammingGroundUp-1-0-booksize.pdf)__.
 
 ---
 
@@ -21,5 +19,15 @@ vagrant ssh
 
 # in the machine
 cd /vagrant/<repo-name>     # these are shared
-./run <program-name>        # w/o suffixes
+
+# w/o suffixes for a simple program.
+# the equivalent of
+# ./run build factorial && ./run exec factorial
+./run simple factorial
+
+# for linking multiple things
+# this will end up building the executable with the name thing1
+# in ./build
+./run build thing1 thing2 thing3
+./run exec thing1 # arg1 arg2 arg3 ... as necessary
 ```

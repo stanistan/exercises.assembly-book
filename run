@@ -1,32 +1,90 @@
-#!/bin/sh
+#!/bin/bash
+
+abort() {
+    echo ""
+    echo "[Aborted] $@"
+    exit 1
+}
 
 status() {
-    echo "  ...$1..."
+    echo "[`pwd`]: $1"
+    return 0
 }
+
+call() {
+    local cmd="$@"
+    status "$cmd"
+    $cmd
+    return $?
+}
+
+assemble() {
+    cd ./src/
+    call "as --32 ./$1.s -o ../build/$1.o"
+    local out_status=$?
+    cd ../
+    return $out_status
+}
+
+assembleMany() {
+    for i in ${@}; do
+        assemble "$i" || abort "Failed during assembly"
+    done
+}
+
+object() {
+    for i in "${@}"; do
+        echo -n "$i.o "
+    done
+    return 0
+}
+
+link() {
+    cd ./build/
+    local out=$1
+    call "ld -m elf_i386 `object $@` -o $out"
+    local out_status=$?
+    cd ../
+    return $out_status
+}
+
+
 
 build() {
-    local name=$1
-    as --32 ./src/$name.s -o ./build/$name.o
-    ld -m elf_i386 ./build/$name.o -o ./build/$name
-    status "Created: ./build/$name"
-}
-
-run() {
-    local name=$1
-    shift
-
-    status "Running: ./build/$name $@"
-    ./build/$name $@
-
-    local out=$?
-
-    echo "......................................................"
-    echo "EXIT STATUS: $out"
+    assembleMany $@
+    link $@ || abort "Failed during linking step."
 }
 
 main() {
-    build $1
-    run $@
+
+    local fn=$1
+    shift
+
+    case $fn in
+        build)
+            build $@
+            ;;
+        assemble)
+            assembleMany $@
+            ;;
+        link)
+            link $@
+            ;;
+        exec)
+            local name=$1
+            shift
+            ./build/$name $@
+            echo "EXIT STATUS: $?"
+            ;;
+        simple)
+            build $@ && main exec $@
+            ;;
+        *)
+            echo $"Usage: ./run {simple|build|exec|link|assemble}"
+            exit 1
+    esac
+
+    exit 0
 }
 
 main $@
