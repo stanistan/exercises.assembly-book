@@ -4,6 +4,9 @@ read-records:
 write-records:
 	./run build write-records write-record
 
+add-year:
+	./run build add-year read-record write-record
+
 clean:
 	rm -r ./build/*
 
