@@ -16,6 +16,7 @@ vagrant up
 # now we can run some scripts
 # if the Vagrantfile is in the root repo
 vagrant ssh
+sudo apt-get install make # cause Makefile
 
 # in the machine
 cd /vagrant/<repo-name>     # these are shared
