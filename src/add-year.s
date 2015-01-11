@@ -29,7 +29,21 @@ _start:
  int    $LINUX_SYSCALL
 
  movl   %eax, ST_INPUT_DESCRIPTOR(%ebp)
+ cmpl   $0, %eax
+ jl     continue_processing
 
+ .section .data
+no_open_file_code:
+ .ascii "0001: \0"
+no_open_file_msg:
+ .ascii "Can't Open Input File\0"
+
+ .section .text
+ pushl  $no_open_file_msg
+ pushl  $no_open_file_code
+ call   error_exit
+
+continue_processing:
  #Open file for writing
  movl   $SYS_OPEN, %eax
  movl   $output_file_name, %ebx

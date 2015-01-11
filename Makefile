@@ -5,7 +5,7 @@ write-records:
 	./run build write-records write-record
 
 add-year:
-	./run build add-year read-record write-record
+	./run build add-year read-record write-record error-exit count-chars write-newline
 
 clean:
 	rm -r ./build/*
