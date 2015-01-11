@@ -5,9 +5,8 @@
  .section .data
 file_name:
  .ascii "build/test.dat\0"
-
- .section .bss
- .lcomm record_buffer, RECORD_SIZE
+record_buffer_ptr:
+ .long 0
 
  .section .text
  #Main program
@@ -21,6 +20,11 @@ _start:
 
  movl   %esp, %ebp
  subl   $8, %esp
+
+ call   allocate_init
+ pushl  $RECORD_SIZE
+ call   allocate
+ movl   %eax, record_buffer_ptr
 
  movl   $SYS_OPEN, %eax
  movl   $file_name, %ebx
@@ -39,7 +43,7 @@ _start:
 
 record_read_loop:
  pushl  ST_INPUT_DESCRIPTOR(%ebp)
- pushl  $record_buffer
+ pushl  record_buffer_ptr
  call   read_record
  addl   $8, %esp
 
@@ -50,13 +54,16 @@ record_read_loop:
  cmpl   $RECORD_SIZE, %eax
  jne    finished_reading
 
- pushl  $RECORD_FIRSTNAME + record_buffer
+ movl   record_buffer_ptr, %eax
+ addl   $RECORD_FIRSTNAME, %eax
+ pushl  %eax
  call   count_chars
  addl   $4, %esp
  movl   %eax, %edx
  movl   ST_OUTPUT_DESCRIPTOR(%ebp), %ebx
  movl   $SYS_WRITE, %eax
- movl   $RECORD_FIRSTNAME + record_buffer, %ecx
+ movl   record_buffer_ptr, %ecx
+ addl   $RECORD_FIRSTNAME, %ecx
  int    $LINUX_SYSCALL
 
  pushl  ST_OUTPUT_DESCRIPTOR(%ebp)
@@ -66,6 +73,9 @@ record_read_loop:
  jmp    record_read_loop
 
 finished_reading:
+ pushl  record_buffer_ptr
+ call   deallocate
+
  movl   $SYS_EXIT, %eax
  movl   $0, %ebx
  int    $LINUX_SYSCALL

@@ -1,5 +1,5 @@
 read-records:
-	./run build read-records read-record count-chars write-newline
+	./run build read-records read-record count-chars write-newline alloc
 
 write-records:
 	./run build write-records write-record
