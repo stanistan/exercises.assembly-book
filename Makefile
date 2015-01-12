@@ -7,6 +7,9 @@ write-records:
 add-year:
 	./run build add-year read-record write-record error-exit count-chars write-newline
 
+conversion-program:
+	./run build conversion-program integer-to-string count-chars write-newline
+
 clean:
 	rm -r ./build/*
 
