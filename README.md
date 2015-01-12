@@ -106,4 +106,11 @@ ld -m elf_i386 foo.o -o foo
 
 ###### Chapter 10
 
-- Page `204` - [DAV's Endian FAQ](http://david.carybros.com/html/endian_faq.html) - the URL in the book is no longer active.
+- `Page 204` - [DAV's Endian FAQ](http://david.carybros.com/html/endian_faq.html) - the URL in the book is no longer active.
+
+### Quotes
+
+###### Chapter 12
+
+> For example, pregnancy is not very parallelizable because no matter
+> how many women you have, it still takes nine months.
