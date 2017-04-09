@@ -8,27 +8,20 @@ Going through _[Programming From The Ground Up](http://mirrors.fe.up.pt/pub/nong
 
 I am running all of the exercises in a Ubuntu VM via Vagrant (``precise32``).
 
-1. Clone me
-
-    ```
-    git clone git@github.com:stanistan/exercises.assembly-book.git
-    cd exercises.assembly-book
-    ```
-
-2. Get Vagrant [here](https://www.vagrantup.com/downloads) or, if using [Homebrew](https://brew.sh):
+1. Get Vagrant [here](https://www.vagrantup.com/downloads) or, if using [Homebrew](https://brew.sh):
 
     ```
     brew cask install virtualbox
     brew cask install vagrant
     ```
 
-3. Get the box
+2. Get the box
 
     ```
     vagrant box add precise32 http://files.vagrantup.com/precise32.box
     ```
 
-4. Pick a place to have the vm.
+3. Pick a place to have the vm.
 
     ```
     cd path/to/proj
@@ -39,7 +32,7 @@ I am running all of the exercises in a Ubuntu VM via Vagrant (``precise32``).
     git clone git@github.com:stanistan/exercises.assembly-book.git book
     ```
 
-5. Dependencies on the VM (TODO: move to Vagrantfile and actually manage the dependencies)
+4. Dependencies on the VM (TODO: move to Vagrantfile and actually manage the dependencies)
 
     ```
     vagrant ssh
